@@ -1,0 +1,23 @@
+<head>
+    <!-- ... other head elements ... -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Register</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+        <a href="{% url 'login' %}">Already have an account? Login</a>
+    </div>
+</body>
+</html>
