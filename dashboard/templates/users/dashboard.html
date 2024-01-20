@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="row my-4">
+        <div class="col-12 text-right"> <!-- Add the "text-right" class here -->
+            <button class="btn btn-danger" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    
+    <div class="container text-center mt-5">
+        <h1>Welcome to your Dashboard!</h1>
+        <!-- Section 1: Click Me Button -->
+        <div class="row my-4">
+            <div class="col-12">
+                <button class="btn btn-primary" onclick="click1()">Click Me</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <span id="customer" class="bg-light p-2"></span>
+            </div>
+        </div>
+
+        <!-- Section 2: Get Average -->
+        <div class="row my-4">
+            <div class="col-12">
+                <button class="btn btn-primary" onclick="getavg()">Get Average</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <input id="avg" type="text" class="form-control d-inline-block w-auto">
+                <label>Result:</label>
+                <span id="avg_res"></span>
+            </div>
+        </div>
+
+        <!-- Section 3: Load Graph -->
+        <div class="row my-4">
+            <div class="col-12">
+                <button class="btn btn-primary" onclick="getimage()">Load Graph</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <img id="matplotlib" width="500" alt="Graph Image">
+            </div>
+        </div>
+
+        <!-- Section 4: Load Table -->
+        <div class="row my-4">
+            <div class="col-12">
+                <button class="btn btn-primary" onclick="getPandas()">Load Table</button>
+            </div>
+        </div>
+        <div class="row">
+            <div id="pandas" class="col-12">
+                <!-- Table will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript functions for handling button clicks and fetching data
+
+        function click1() {
+            fetch('{% url 'charts:get-num' %}')
+                .then(res => res.text())
+                .then(data => document.getElementById('customer').innerHTML = data);
+        }
+
+        function getavg() {
+            var val_list = document.getElementById('avg').value;
+            fetch('{% url 'charts:get-avg' %}' + "?val=" + val_list)
+                .then(res => res.text())
+                .then(data => document.getElementById('avg_res').innerHTML = data);
+        }
+
+        function getimage() {
+            fetch('{% url 'charts:get-graph' %}')
+                .then(res => res.blob())
+                .then(data => {
+                    let imgURL = URL.createObjectURL(data);
+                    document.getElementById('matplotlib').src = imgURL;
+                });
+        }
+
+        function getPandas() {
+            fetch('{% url 'charts:get-data' %}')
+                .then(res => res.text())
+                .then(data => document.getElementById('pandas').innerHTML = data);
+        }
+
+    </script>
+</body>
+</html>
